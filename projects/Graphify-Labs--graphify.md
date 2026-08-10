@@ -6,7 +6,16 @@
 
 [Graphify-Labs/graphify on GitHub](https://github.com/Graphify-Labs/graphify)
 
+## Contents
+
+| Contribution | Issue | Pull request | Status | Shipped in | Landed |
+|---|---|---|---|---|---|
+| [JS/TS: `await import('…')` inside a nested function produces no…](#n2575) | [#2575](https://github.com/Graphify-Labs/graphify/issues/2575) | [#2574](https://github.com/Graphify-Labs/graphify/pull/2574) | Shipped | v0.9.38 | 2026-08-09 |
+| [JS/TS: `affected` cannot traverse a dynamic `import('…')` made…](#n2584) | [#2584](https://github.com/Graphify-Labs/graphify/issues/2584) | [#2588](https://github.com/Graphify-Labs/graphify/pull/2588) | In flight | — | — |
+
 ## Credited
+
+<a id="n2575"></a>
 
 ### JS/TS: `await import('…')` inside a nested function produces no edge — and `affected` cannot traverse `dynamic_import` at all
 
@@ -35,6 +44,8 @@
 ## In flight
 
 _Open, not yet accepted. Not counted in any total._
+
+<a id="n2584"></a>
 
 ### JS/TS: `affected` cannot traverse a dynamic `import('…')` made inside a function — edge exists, blast radius is short by 20%
 

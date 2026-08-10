@@ -14,7 +14,11 @@ set -u
 # an alarm nobody has ever seen fire is an alarm nobody should trust.
 REPO="${CONTRIB_REPO:-$HOME/Documents/Công việc/project/contributions}"
 STAMP="${CONTRIB_STAMP:-$HOME/.claude/.contrib-last-scan}"
-NAGGED="$HOME/.claude/.contrib-last-nag"
+# Overridable for the same reason, and the omission was caught by using it: firing
+# the auth alarm against a scratch repo still wrote the REAL reminder timestamp, so
+# a genuine token lapse within the next day would have been swallowed — the hook
+# would believe it had already spoken.
+NAGGED="${CONTRIB_NAG:-$HOME/.claude/.contrib-last-nag}"
 THROTTLE=86400    # at most one scan a day
 STALE=259200      # three days unable to scan is worth saying out loud
 

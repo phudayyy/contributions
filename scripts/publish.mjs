@@ -76,7 +76,12 @@ if (DRY) {
   process.exit(0)
 }
 
-await git('add', 'data/contributions.json', 'projects', 'README.md')
+// Every tracked modification, plus whatever rendering newly created. Staging only
+// the ledger and the rendered pages would strand a change to render.mjs outside
+// the pull request, leaving markdown that cannot be reproduced from the code
+// sitting next to it. Untracked files elsewhere are still left alone.
+await git('add', '-u')
+await git('add', 'data/contributions.json', 'projects', 'README.md', 'IN-FLIGHT.md')
 
 const staged = await git('diff', '--cached', '--name-only')
 if (!staged) {
@@ -118,9 +123,9 @@ const prBody = [
   ...records.map((r) => {
     const where = r.links?.release ?? r.links?.pr ?? r.links?.issue ?? ''
     return `- **${r.status}** · ${r.project.repo} — ${r.title}${where ? ` (${where})` : ''}`
-  }),
-  '',
-  '🤖 Generated with [Claude Code](https://claude.com/claude-code)'
+  })
+  // No "Generated with Claude Code" trailer. A pull request body says what changed
+  // and why; nothing in it should be about what wrote it.
 ].join('\n')
 
 const url = await gh('pr', 'create', '--base', 'main', '--head', now, '--title', subject, '--body', prBody)

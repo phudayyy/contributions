@@ -79,7 +79,7 @@ if (DRY) {
 // the pull request, leaving markdown that cannot be reproduced from the code
 // sitting next to it. Untracked files elsewhere are still left alone.
 await git('add', '-u')
-await git('add', 'data/contributions.json', 'projects', 'README.md', 'IN-FLIGHT.md')
+await git('add', 'data/contributions.json', 'projects', 'README.md', 'IN-FLIGHT.md', 'claude', 'scripts')
 
 const staged = await git('diff', '--cached', '--name-only')
 if (!staged) {

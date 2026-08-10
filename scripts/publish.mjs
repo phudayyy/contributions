@@ -52,9 +52,7 @@ if (!status) {
 const ledger = JSON.parse(await readFile(path.join(ROOT, 'data/contributions.json'), 'utf8'))
 const records = ledger.records ?? []
 
-// Describe the change using the ledger the render was produced from.
-const credited = records.filter((r) => ['merged', 'shipped', 'credited'].includes(r.status))
-const projects = [...new Set(records.map((r) => r.project.repo))]
+const CREDITED = new Set(['merged', 'shipped', 'credited'])
 
 /* ------------------------------------------------------------------ the guard rail */
 
@@ -89,11 +87,33 @@ if (!staged) {
   process.exit(0)
 }
 
-const subject = `contrib: record ${credited.length} credited contribution${credited.length === 1 ? '' : 's'} across ${projects.length} project${projects.length === 1 ? '' : 's'}`
+/* ------------------------------------- what THIS pull request actually adds */
+
+// Describe the diff, not the ledger. Titling from the whole ledger announced
+// "record 1 credited contribution" on a pull request that touched only
+// .gitignore and scan.mjs — so the one signal the user relies on to decide
+// whether a pull request is worth opening was lying about every tooling change.
+await gitSoft('fetch', 'origin', 'main', '--quiet')
+const baseRaw = await gitSoft('show', 'origin/main:data/contributions.json')
+let baseIds = new Set()
+try { baseIds = new Set((JSON.parse(baseRaw || '{}').records ?? []).map((r) => r.id)) } catch { /* first push */ }
+
+const added = records.filter((r) => !baseIds.has(r.id))
+const addedCredited = added.filter((r) => CREDITED.has(r.status))
+const addedProjects = [...new Set(added.map((r) => r.project.repo))]
+const touched = [...new Set(staged.split('\n').filter(Boolean).map((f) => f.split('/')[0]))]
+
+const subject = added.length
+  ? `contrib: record ${addedCredited.length} credited` +
+    (added.length > addedCredited.length ? ` and ${added.length - addedCredited.length} in flight` : '') +
+    ` across ${addedProjects.length} project${addedProjects.length === 1 ? '' : 's'}`
+  : `chore: update how the log is produced (${touched.join(', ')})`
 
 const body = [
   '',
-  ...records.slice(0, 20).map((r) => `- ${r.status}: ${r.project.repo} — ${r.title}`),
+  ...(added.length
+    ? added.map((r) => `- ${r.status}: ${r.project.repo} — ${r.title}`)
+    : ['No new contributions. This changes the tooling that produces the log.']),
   '',
   'Rendered by scripts/render.mjs from data/contributions.json.',
   '',
@@ -110,23 +130,31 @@ if (reusable) {
   process.exit(0)
 }
 
-const prBody = [
-  'Recorded automatically by the `/contrib` rule. Nothing here reaches `main` until you merge.',
-  '',
-  '### What to check',
-  '',
-  'Every entry claiming credit carries a quote and a link to where that credit was written.',
-  'Open the evidence block on each one and confirm the quote really says what the entry claims.',
-  '',
-  '### Entries in this pull request',
-  '',
-  ...records.map((r) => {
-    const where = r.links?.release ?? r.links?.pr ?? r.links?.issue ?? ''
-    return `- **${r.status}** · ${r.project.repo} — ${r.title}${where ? ` (${where})` : ''}`
-  })
+const prBody = (added.length
+  ? [
+      'Recorded automatically by the `/contrib` rule. Nothing here reaches `main` until you merge.',
+      '',
+      '### What to check',
+      '',
+      'Every entry claiming credit carries a quote and a link to where that credit was written.',
+      'Open the evidence block on each one and confirm the quote really says what the entry claims.',
+      '',
+      `### ${added.length} new entr${added.length === 1 ? 'y' : 'ies'}`,
+      '',
+      ...added.map((r) => {
+        const where = r.links?.release ?? r.links?.pr ?? r.links?.issue ?? ''
+        return `- **${r.status}** · ${r.project.repo} — ${r.title}${where ? ` (${where})` : ''}`
+      })
+    ]
+  : [
+      '**No new contributions in this pull request** — nothing to verify, and nothing was added to',
+      'the log. This changes only the tooling that produces it, so it is safe to skim.',
+      '',
+      `Files touched: ${staged.split('\n').filter(Boolean).map((f) => `\`${f}\``).join(', ')}`
+    ]
   // No "Generated with Claude Code" trailer. A pull request body says what changed
   // and why; nothing in it should be about what wrote it.
-].join('\n')
+).join('\n')
 
 const url = await gh('pr', 'create', '--base', 'main', '--head', now, '--title', subject, '--body', prBody)
 console.log(`opened ${url}`)

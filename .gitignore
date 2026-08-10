@@ -4,3 +4,6 @@ node_modules/
 
 # Scan output staged for review before it enters the ledger.
 data/.pending.json
+
+# Rewritten every scan; empty when the search was not truncated.
+data/.scan-warnings

@@ -188,10 +188,29 @@ const excludeQuery = [...excluded].map((o) => `-user:${o}`)
 const PR_FIELDS = 'repository,number,title,state,createdAt,closedAt,url,body,isDraft'
 const ISSUE_FIELDS = 'repository,number,title,state,createdAt,closedAt,url,body'
 
-const search = (kind, fields, extra = []) => ghJson(
-  ['search', kind, '--author', LOGIN, '--limit', LIMIT, '--json', fields, ...extra],
-  []
-)
+const warnings = []
+
+/**
+ * A saturated search is the dangerous case, because it looks exactly like a
+ * complete one: `gh search` returns newest-first and simply stops at `--limit`,
+ * with no flag, no error and no count of what it dropped. Getting back exactly
+ * the number asked for is the only evidence there was more, so it is worth
+ * saying out loud — a contribution that fell off the end leaves no other trace.
+ */
+const search = async (kind, fields, extra = []) => {
+  const out = await ghJson(
+    ['search', kind, '--author', LOGIN, '--limit', LIMIT, '--json', fields, ...extra],
+    []
+  ) ?? []
+  if (out.length >= Number(LIMIT)) {
+    warnings.push(
+      `SATURATED: the ${kind} search returned ${out.length}, which is the whole limit. ` +
+      'Results are truncated newest-first, so anything older is invisible and silently unlogged. ' +
+      'Raise limits.search_limit in data/config.json, or narrow the query further.'
+    )
+  }
+  return out
+}
 
 const prSearch = [...(await search('prs', PR_FIELDS, ['--', ...excludeQuery]) ?? [])]
 const issueSearch = [...(await search('issues', ISSUE_FIELDS, ['--', ...excludeQuery]) ?? [])]
@@ -465,6 +484,10 @@ say(`\n${drafts.length} draft record(s)${NEW_ONLY ? ' not yet in the ledger' : '
 await emit(drafts)
 
 async function emit (list) {
+  // Rewritten every run, empty when clean, so a warning cannot outlive its cause.
+  await writeFile(path.join(ROOT, 'data/.scan-warnings'), warnings.join('\n') + (warnings.length ? '\n' : ''), 'utf8')
+  for (const w of warnings) say(`  ⚠ ${w}`)
+
   const json = JSON.stringify(list, null, 2)
   if (CACHE) await writeFile(CACHE, json + '\n', 'utf8')
   process.stdout.write(json + '\n')

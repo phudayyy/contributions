@@ -159,10 +159,19 @@ const ALIAS_RE = makeAliasRe(config.aliases?.length ? config.aliases : [LOGIN])
 const LIMIT = String(config.limits?.search_limit ?? 100)
 ghTimeout = config.limits?.gh_timeout_ms ?? 25000
 
-/** Every issue/PR number already recorded, so a rescan cannot re-add it. */
-const knownNumbers = new Set()
+/**
+ * Every issue/PR number already recorded, mapped to the record holding it.
+ *
+ * A set of "seen" numbers would be enough to stop a rescan re-adding the same
+ * contribution, and that is all this was at first — which froze every in-flight
+ * entry permanently. A pull request logged while it was still open would keep
+ * saying `open` after the maintainer shipped it, because the scan skipped it on
+ * sight and nothing ever looked again. So a known number now resolves to its
+ * record, and the draft is compared against it.
+ */
+const knownRecords = new Map()
 for (const r of ledger.records ?? []) {
-  for (const n of r.numbers ?? []) knownNumbers.add(`${r.project.repo}#${n}`)
+  for (const n of r.numbers ?? []) knownRecords.set(`${r.project.repo}#${n}`, r)
 }
 
 /* ------------------------------------------------------------------ discovery */
@@ -466,9 +475,29 @@ for (const repo of [...repos].sort()) {
       evidence: evidence.map(({ refs, ...keep }) => keep)
     }
 
-    const isKnown = draft.numbers.some((n) => knownNumbers.has(`${repo}#${n}`))
-    if (NEW_ONLY && isKnown) continue
-    draft.already_recorded = isKnown
+    const existing = draft.numbers.map((n) => knownRecords.get(`${repo}#${n}`)).find(Boolean)
+
+    // What upstream can still change about a contribution we already logged.
+    const moved = existing && (
+      existing.status !== draft.status ||
+      (existing.shipped_in ?? null) !== (draft.shipped_in ?? null) ||
+      (existing.evidence?.length ?? 0) !== draft.evidence.length ||
+      (existing.links?.commit ?? null) !== (draft.links.commit ?? null)
+    )
+
+    if (NEW_ONLY && existing && !moved) continue
+
+    if (existing) {
+      // Keep what a person wrote and the identity the log already published;
+      // an update must not silently drop the impact sentence or renumber a link.
+      draft.id = existing.id
+      draft.kind = existing.kind ?? draft.kind
+      draft.impact = existing.impact ?? draft.impact
+      draft.recorded_at = existing.recorded_at
+      draft.updates = { from: existing.status, to: draft.status }
+    }
+
+    draft.already_recorded = Boolean(existing)
     drafts.push(draft)
   }
 }
@@ -477,7 +506,8 @@ drafts.sort((a, b) => (b.dates.opened ?? '').localeCompare(a.dates.opened ?? '')
 
 say('')
 for (const d of drafts) {
-  say(`  ${d.status.padEnd(17)} ${d.id}  ${d.evidence.length} evidence  ${d.title.slice(0, 60)}`)
+  const what = d.updates ? `${d.updates.from} → ${d.updates.to}` : d.status
+  say(`  ${what.padEnd(20)} ${d.id}  ${d.evidence.length} evidence  ${d.title.slice(0, 56)}`)
 }
 say(`\n${drafts.length} draft record(s)${NEW_ONLY ? ' not yet in the ledger' : ''}.`)
 

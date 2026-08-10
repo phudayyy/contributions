@@ -76,6 +76,11 @@ if (DRY) {
   process.exit(0)
 }
 
+// Every tracked modification, plus whatever rendering newly created. Staging only
+// the ledger and the rendered pages would strand a change to render.mjs outside
+// the pull request, leaving markdown that cannot be reproduced from the code
+// sitting next to it. Untracked files elsewhere are still left alone.
+await git('add', '-u')
 await git('add', 'data/contributions.json', 'projects', 'README.md')
 
 const staged = await git('diff', '--cached', '--name-only')

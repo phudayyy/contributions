@@ -175,10 +175,23 @@ function renderRecord (r) {
   if ((r.evidence ?? []).length) {
     out.push('<details><summary>Evidence</summary>')
     out.push('')
+    // A changelog line and the release note built from it are the same sentence in
+    // two places. Both are real citations, but printing three hundred identical
+    // characters twice reads as padding — so show the sentence once, cite both.
+    const byQuote = new Map()
     for (const e of r.evidence) {
-      const label = EVIDENCE_LABEL[e.type] ?? e.type
-      const who = e.by ? ` (@${e.by})` : ''
-      out.push(`- **${label}**${who} — “${esc(e.quote)}” — [source](${e.source})`)
+      const key = (e.quote ?? '').trim()
+      if (!byQuote.has(key)) byQuote.set(key, [])
+      byQuote.get(key).push(e)
+    }
+    for (const [quote, cites] of byQuote) {
+      const sources = cites.map((e) => {
+        const label = EVIDENCE_LABEL[e.type] ?? e.type
+        const who = e.by ? ` @${e.by}` : ''
+        return `[${label}${who}](${e.source})`
+      }).join(' · ')
+      out.push(`- “${esc(quote)}”`)
+      out.push(`  <br>— ${sources}`)
     }
     out.push('')
     out.push('</details>')

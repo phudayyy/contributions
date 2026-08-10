@@ -4,7 +4,7 @@ A log of my contributions to other people's open-source projects, and of where e
 acknowledged. Every credited entry carries a quote and a link to the place the credit was
 written — a changelog line, a release note, or a maintainer's own words.
 
-**1 credited contribution** across **1 project** · 1 in flight
+**1 credited contribution** across **1 project** · [1 in flight](IN-FLIGHT.md)
 
 | Project | Credited | In flight | Shipped in | Latest |
 |---|---|---|---|---|

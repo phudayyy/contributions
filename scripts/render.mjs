@@ -125,6 +125,11 @@ if (CHECK_ONLY) {
 
 const slug = (repo) => repo.replace(/\//g, '--')
 const esc = (s) => String(s ?? '').replace(/\|/g, '\\|').replace(/\r?\n/g, ' ')
+
+// An explicit anchor, rather than trusting GitHub to derive one from a heading
+// full of backticks, ellipses and em dashes.
+const anchorOf = (r) => `n${String(r.id).split('#').pop()}`
+const short = (s, n = 64) => (String(s).length > n ? `${String(s).slice(0, n - 1).trimEnd()}…` : String(s))
 const byDateDesc = (a, b) =>
   (b.dates?.opened ?? '').localeCompare(a.dates?.opened ?? '') || String(a.id).localeCompare(String(b.id))
 
@@ -138,6 +143,8 @@ function renderRecord (r) {
     r.shipped_in ? `released in **${r.shipped_in}**` : null
   ].filter(Boolean)
 
+  out.push(`<a id="${anchorOf(r)}"></a>`)
+  out.push('')
   out.push(`### ${r.title}`)
   out.push('')
   out.push(bits.join(' · '))
@@ -226,6 +233,25 @@ function renderProject (repo, list) {
   out.push('')
   out.push(`[${repo} on GitHub](${meta.url})`)
   out.push('')
+
+  // Past a couple of entries the page is a wall of long headings, and the two
+  // questions someone actually arrives with — which pull requests were taken, and
+  // which issues were resolved — are answerable from a table without scrolling.
+  if (list.length >= 2) {
+    const ordered = [...credited.sort(byDateDesc), ...inFlight.sort(byDateDesc), ...notAdopted.sort(byDateDesc)]
+    out.push('## Contents')
+    out.push('')
+    out.push('| Contribution | Issue | Pull request | Status | Shipped in | Landed |')
+    out.push('|---|---|---|---|---|---|')
+    for (const r of ordered) {
+      const n = (u) => (u ? `[#${u.split('/').pop()}](${u})` : '—')
+      out.push(
+        `| [${esc(short(r.title))}](#${anchorOf(r)}) | ${n(r.links?.issue)} | ${n(r.links?.pr)} | ` +
+        `${STATUS_LABEL[r.status] ?? r.status} | ${r.shipped_in ?? '—'} | ${r.dates?.landed ?? '—'} |`
+      )
+    }
+    out.push('')
+  }
 
   if (credited.length) {
     out.push('## Credited')

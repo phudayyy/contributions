@@ -169,17 +169,38 @@ for (const r of ledger.records ?? []) {
 
 say(`scanning as @${LOGIN} …`)
 
-const prSearch = await ghJson(
-  ['search', 'prs', '--author', LOGIN, '--limit', LIMIT,
-    '--json', 'repository,number,title,state,createdAt,closedAt,url,body,isDraft'],
-  []
-) ?? []
+const excluded = new Set((config.scope?.exclude_owners ?? []).map((s) => s.toLowerCase()))
+const allow = new Set((config.scope?.allowlist_repos ?? []).map((s) => s.toLowerCase()))
 
-const issueSearch = await ghJson(
-  ['search', 'issues', '--author', LOGIN, '--limit', LIMIT,
-    '--json', 'repository,number,title,state,createdAt,closedAt,url,body'],
+/**
+ * Exclude our own repositories inside the query, not after it.
+ *
+ * `gh search` returns at most `--limit` results, newest first, and that ceiling
+ * is already saturated: measured 2026-08-10, `--limit 100` came back with exactly
+ * 100 pull requests, 98 of them on `phudayyy/*`. Filtering after the search cannot
+ * recover a contribution that fell off the end of the window — every new pull
+ * request on a personal repo pushes an older upstream one out of sight, silently.
+ * `-user:<owner>` makes GitHub drop them server-side, so the whole budget is spent
+ * on other people's projects.
+ */
+const excludeQuery = [...excluded].map((o) => `-user:${o}`)
+
+const PR_FIELDS = 'repository,number,title,state,createdAt,closedAt,url,body,isDraft'
+const ISSUE_FIELDS = 'repository,number,title,state,createdAt,closedAt,url,body'
+
+const search = (kind, fields, extra = []) => ghJson(
+  ['search', kind, '--author', LOGIN, '--limit', LIMIT, '--json', fields, ...extra],
   []
-) ?? []
+)
+
+const prSearch = [...(await search('prs', PR_FIELDS, ['--', ...excludeQuery]) ?? [])]
+const issueSearch = [...(await search('issues', ISSUE_FIELDS, ['--', ...excludeQuery]) ?? [])]
+
+// An allowlisted repo we own is invisible to the query above, so ask for it directly.
+for (const repo of config.scope?.allowlist_repos ?? []) {
+  prSearch.push(...(await search('prs', PR_FIELDS, ['--repo', repo]) ?? []))
+  issueSearch.push(...(await search('issues', ISSUE_FIELDS, ['--repo', repo]) ?? []))
+}
 
 // `gh search issues` returns pull requests too; keep only true issues.
 const prNumbersByRepo = new Map()
@@ -191,9 +212,6 @@ for (const p of prSearch) {
 const issuesOnly = issueSearch.filter(
   (i) => !prNumbersByRepo.get(i.repository.nameWithOwner)?.has(i.number)
 )
-
-const excluded = new Set((config.scope?.exclude_owners ?? []).map((s) => s.toLowerCase()))
-const allow = new Set((config.scope?.allowlist_repos ?? []).map((s) => s.toLowerCase()))
 
 function inScope (nameWithOwner) {
   const lower = nameWithOwner.toLowerCase()

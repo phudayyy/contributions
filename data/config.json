@@ -1,0 +1,39 @@
+{
+  "github_login": "phudayyy",
+  "aliases": ["phudayyy", "trphudayy2201@gmail.com"],
+
+  "scope": {
+    "mode": "external-only",
+    "exclude_owners": ["phudayyy"],
+    "allowlist_repos": [],
+    "watch_repos": []
+  },
+
+  "changelog_paths": [
+    "CHANGELOG.md",
+    "CHANGELOG",
+    "CHANGELOG.rst",
+    "CHANGES.md",
+    "CHANGES",
+    "HISTORY.md",
+    "NEWS.md",
+    "RELEASES.md",
+    "docs/CHANGELOG.md",
+    "docs/changelog.md"
+  ],
+
+  "credit_file_paths": [
+    "AUTHORS",
+    "AUTHORS.md",
+    "CONTRIBUTORS",
+    "CONTRIBUTORS.md",
+    "THANKS",
+    "THANKS.md"
+  ],
+
+  "limits": {
+    "search_limit": 100,
+    "releases_per_repo": 30,
+    "gh_timeout_ms": 25000
+  }
+}

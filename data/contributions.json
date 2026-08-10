@@ -1,5 +1,107 @@
 {
   "version": 1,
   "note": "Source of truth. projects/*.md and README.md are rendered from this file by scripts/render.mjs and must never be hand-edited.",
-  "records": []
+  "records": [
+    {
+      "id": "Graphify-Labs/graphify#2584",
+      "numbers": [
+        2584,
+        2588
+      ],
+      "project": {
+        "repo": "Graphify-Labs/graphify",
+        "name": "graphify",
+        "url": "https://github.com/Graphify-Labs/graphify",
+        "description": "Turn any codebase, with its docs, SQL schemas, configs, and PDFs, into a queryable knowledge graph. A /graphify skill for Claude Code, Cursor, Codex, and Gemini CLI: local deterministic AST parsing, every edge explained, no vector store."
+      },
+      "title": "JS/TS: `affected` cannot traverse a dynamic `import('…')` made inside a function — edge exists, blast radius is short by 20%",
+      "kind": "bugfix",
+      "role": [
+        "reporter",
+        "author"
+      ],
+      "status": "open",
+      "shipped_in": null,
+      "links": {
+        "issue": "https://github.com/Graphify-Labs/graphify/issues/2584",
+        "pr": "https://github.com/Graphify-Labs/graphify/pull/2588",
+        "commit": null,
+        "release": null
+      },
+      "dates": {
+        "opened": "2026-08-10",
+        "landed": null,
+        "released": null
+      },
+      "impact": "The edge is present in the graph but reverse traversal dead-ends on it, so `affected` still reports a blast radius around 20% short wherever a dynamic `import(...)` sits inside a function.",
+      "evidence": [],
+      "recorded_at": "2026-08-10"
+    },
+    {
+      "id": "Graphify-Labs/graphify#2575",
+      "numbers": [
+        2574,
+        2575
+      ],
+      "project": {
+        "repo": "Graphify-Labs/graphify",
+        "name": "graphify",
+        "url": "https://github.com/Graphify-Labs/graphify",
+        "description": "Turn any codebase, with its docs, SQL schemas, configs, and PDFs, into a queryable knowledge graph. A /graphify skill for Claude Code, Cursor, Codex, and Gemini CLI: local deterministic AST parsing, every edge explained, no vector store."
+      },
+      "title": "JS/TS: `await import('…')` inside a nested function produces no edge — and `affected` cannot traverse `dynamic_import` at all",
+      "kind": "bugfix",
+      "role": [
+        "reporter",
+        "author"
+      ],
+      "status": "shipped",
+      "shipped_in": "v0.9.38",
+      "links": {
+        "issue": "https://github.com/Graphify-Labs/graphify/issues/2575",
+        "pr": "https://github.com/Graphify-Labs/graphify/pull/2574",
+        "commit": null,
+        "release": "https://github.com/Graphify-Labs/graphify/releases/tag/v0.9.38"
+      },
+      "dates": {
+        "opened": "2026-08-09",
+        "landed": "2026-08-09",
+        "released": "2026-08-09"
+      },
+      "impact": "A dynamic `await import(...)` written inside a nested function produced no edge at all, so code reachable only through a deferred import was missing from the graph, and `affected` could not traverse `dynamic_import` edges even where they did exist.",
+      "evidence": [
+        {
+          "type": "changelog",
+          "quote": "- Fix: a dynamic `await import('…')` inside a nested function or at module scope now produces an edge (#2575, thanks @phudayyy), and `dynamic_import` edges are now included in `affected`. Calls inside a nested named function are also collected now. A dynamic import already captured as a deferred `imports_from` is not double-counted.",
+          "source": "https://github.com/Graphify-Labs/graphify/blob/10ad921b423b767dd8a947bbf0fbcc2e95038ad3/CHANGELOG.md#L11",
+          "where": "CHANGELOG.md",
+          "version": "0.9.38"
+        },
+        {
+          "type": "release-notes",
+          "quote": "- Fix: a dynamic `await import('…')` inside a nested function or at module scope now produces an edge (#2575, thanks @phudayyy), and `dynamic_import` edges are now included in `affected`. Calls inside a nested named function are also collected now. A dynamic import already captured as a deferred `imports_from` is not double-counted.",
+          "source": "https://github.com/Graphify-Labs/graphify/releases/tag/v0.9.38",
+          "version": "v0.9.38",
+          "published": "2026-08-09"
+        },
+        {
+          "type": "maintainer-thanks",
+          "quote": "Shipped in v0.9.38. Your dynamic-import rescue + `dynamic_import` in DEFAULT_AFFECTED_RELATIONS is what landed for #2575, with a dedupe so an AST-captured deferred import is not double-counted and a companion engine fix so calls in nested named functions resolve too. Credited in the release notes. Thanks @phudayyy!",
+          "source": "https://github.com/Graphify-Labs/graphify/pull/2574#issuecomment-5234169527",
+          "by": "safishamsi",
+          "at": "2026-08-09",
+          "version": "v0.9.38"
+        },
+        {
+          "type": "maintainer-thanks",
+          "quote": "Fixed in v0.9.38. A dynamic `await import(...)` inside a nested function or at module scope now produces an edge, `dynamic_import` edges are included in `affected`, and calls inside a nested named function are collected too. A dynamic import already captured as a deferred imports_from is not double-counted. Thanks @phudayyy for the fix (PR #2574).",
+          "source": "https://github.com/Graphify-Labs/graphify/issues/2575#issuecomment-5234169255",
+          "by": "safishamsi",
+          "at": "2026-08-09",
+          "version": "v0.9.38"
+        }
+      ],
+      "recorded_at": "2026-08-10"
+    }
+  ]
 }

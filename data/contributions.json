@@ -20,21 +20,52 @@
         "reporter",
         "author"
       ],
-      "status": "open",
-      "shipped_in": null,
+      "status": "shipped",
+      "shipped_in": "v0.9.39",
       "links": {
         "issue": "https://github.com/Graphify-Labs/graphify/issues/2584",
         "pr": "https://github.com/Graphify-Labs/graphify/pull/2588",
         "commit": null,
-        "release": null
+        "release": "https://github.com/Graphify-Labs/graphify/releases/tag/v0.9.39"
       },
       "dates": {
         "opened": "2026-08-10",
-        "landed": null,
-        "released": null
+        "landed": "2026-08-10",
+        "released": "2026-08-10"
       },
-      "impact": "The edge is present in the graph but reverse traversal dead-ends on it, so `affected` still reports a blast radius around 20% short wherever a dynamic `import(...)` sits inside a function.",
-      "evidence": [],
+      "impact": "`affected` under-reported blast radius by about 20% wherever a dynamic `import(...)` sat inside a function — 39 of 49 truly affected files on a ~700-file TypeScript repo, and more depth did not help. Since 0.9.39 the dedupe keys on the importing file rather than the target, so those importers are reached and recall is back to 1.00.",
+      "evidence": [
+        {
+          "type": "changelog",
+          "quote": "- Fix: `affected` now traverses a dynamic `import('…')` made inside a function or at module scope (#2584, thanks @phudayyy). The 0.9.38 dedupe keyed only on the target, so an in-function dynamic import (whose symbol-level edge is anchored on the enclosing function) suppressed the file-level edge `affected` follows; the dedupe now keys on the importing file, emitting one file-level `dynamic_import` edge per file/target while keeping the call-site edge.",
+          "source": "https://github.com/Graphify-Labs/graphify/blob/50556baaea803e191947fdfcc2e0c22e2d4eb74d/CHANGELOG.md#L7",
+          "where": "CHANGELOG.md",
+          "version": "0.9.39"
+        },
+        {
+          "type": "release-notes",
+          "quote": "- Fix: `affected` now traverses a dynamic `import('…')` made inside a function or at module scope (#2584, thanks @phudayyy). The 0.9.38 dedupe keyed only on the target, so an in-function dynamic import (whose symbol-level edge is anchored on the enclosing function) suppressed the file-level edge `affected` follows; the dedupe now keys on the importing file, emitting one file-level `dynamic_import` edge per file/target while keeping the call-site edge.",
+          "source": "https://github.com/Graphify-Labs/graphify/releases/tag/v0.9.39",
+          "version": "v0.9.39",
+          "published": "2026-08-10"
+        },
+        {
+          "type": "maintainer-thanks",
+          "quote": "Shipped in v0.9.39 (`graphifyy==0.9.39`). Re-keying the dynamic-import dedupe on the importing file (not the target alone) is what landed for #2584, so `affected` traverses an in-function dynamic import. Credited in the release notes. Thanks @phudayyy!",
+          "source": "https://github.com/Graphify-Labs/graphify/pull/2588#issuecomment-5245052982",
+          "by": "safishamsi",
+          "at": "2026-08-10",
+          "version": "v0.9.39"
+        },
+        {
+          "type": "maintainer-thanks",
+          "quote": "Fixed in v0.9.39 (`graphifyy==0.9.39` on PyPI). The 0.9.38 dynamic-import dedupe keyed only on the target, so an in-function `import(...)` (whose symbol-level edge is anchored on the enclosing function) suppressed the file-level edge `affected` traverses. The dedupe now keys on the importing file, emitting one file-level `dynamic_import` edge per file/target while keeping the call-site edge, so `affected` reaches the importer for side-effect / namespace / different-symbol imports. Thanks @phuday",
+          "source": "https://github.com/Graphify-Labs/graphify/issues/2584#issuecomment-5245049934",
+          "by": "safishamsi",
+          "at": "2026-08-10",
+          "version": "v0.9.39"
+        }
+      ],
       "recorded_at": "2026-08-10"
     },
     {

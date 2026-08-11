@@ -4,13 +4,7 @@ Work I have open upstream that has **not been accepted yet**. Nothing on this pa
 of credit. An entry leaves here the moment it is merged, shipped, or credited, and moves to its
 project page with the evidence attached.
 
-**1 open** across **1 project**
-
-## [Graphify-Labs/graphify](projects/Graphify-Labs--graphify.md) · 1 open
-
-| What | Issue | Pull request | Opened | Age |
-|---|---|---|---|---|
-| [JS/TS: `affected` cannot traverse a dynamic `import('…')`…](projects/Graphify-Labs--graphify.md#n2584) | [#2584](https://github.com/Graphify-Labs/graphify/issues/2584) | [#2588](https://github.com/Graphify-Labs/graphify/pull/2588) | 2026-08-10 | 0d |
+_Nothing open right now._
 
 ---
 

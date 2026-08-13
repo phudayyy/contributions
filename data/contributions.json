@@ -3,6 +3,69 @@
   "note": "Source of truth. projects/*.md and README.md are rendered from this file by scripts/render.mjs and must never be hand-edited.",
   "records": [
     {
+      "id": "Graphify-Labs/graphify#2706",
+      "numbers": [
+        2706,
+        2707
+      ],
+      "project": {
+        "repo": "Graphify-Labs/graphify",
+        "name": "graphify",
+        "url": "https://github.com/Graphify-Labs/graphify",
+        "description": "Turn any codebase, with its docs, SQL schemas, configs, and PDFs, into a queryable knowledge graph. A /graphify skill for Claude Code, Cursor, Codex, and Gemini CLI: local deterministic AST parsing, every edge explained, no vector store."
+      },
+      "title": "`affected` silently returns nothing when the seed path is spelled `./x` or absolute",
+      "kind": "bugfix",
+      "role": [
+        "reporter",
+        "author"
+      ],
+      "status": "shipped",
+      "shipped_in": "v0.9.42",
+      "links": {
+        "issue": "https://github.com/Graphify-Labs/graphify/issues/2706",
+        "pr": "https://github.com/Graphify-Labs/graphify/pull/2707",
+        "commit": "https://github.com/Graphify-Labs/graphify/commit/a05b4084d9ef7157af31af883d976515bda1f24e",
+        "release": "https://github.com/Graphify-Labs/graphify/releases/tag/v0.9.42"
+      },
+      "dates": {
+        "opened": "2026-08-13",
+        "landed": "2026-08-13",
+        "released": "2026-08-13"
+      },
+      "impact": "`affected src/x.py` reported 16 dependents while `affected ./src/x.py` and the absolute form returned an empty list and exit 0 — a blast-radius answer indistinguishable both from a genuine \"nothing depends on this\" and from a typo, and `./` is exactly what shell completion produces. Since 0.9.42 the seed is normalised to repo-relative form before it is compared against the stored `source_file`; an absolute seed still requires the working directory to be the analysed repo root.",
+      "evidence": [
+        {
+          "type": "changelog",
+          "quote": "- Fix: `affected` resolves a seed passed as a `./`-relative path (or an absolute path when run from the repo root) instead of silently returning nothing (#2707, thanks @phudayyy). Note: an absolute-path seed still requires the working directory to be the analysed repo root.",
+          "source": "https://github.com/Graphify-Labs/graphify/blob/7fe58b0b0f3873be9a21c30106b8b8527c353aa6/CHANGELOG.md#L9",
+          "where": "CHANGELOG.md",
+          "version": "0.9.42"
+        },
+        {
+          "type": "release-notes",
+          "quote": "- `affected` resolves a `./`-relative seed instead of silently returning nothing (#2707, @phudayyy).",
+          "source": "https://github.com/Graphify-Labs/graphify/releases/tag/v0.9.42",
+          "version": "v0.9.42",
+          "published": "2026-08-13"
+        },
+        {
+          "type": "maintainer-thanks",
+          "quote": "Shipped in v0.9.42 (`graphifyy==0.9.42` on PyPI). Resolves a `./`-relative seed. Note: an absolute-path seed still requires the working directory to be the analysed repo root — a follow-up could derive the root from the graph location. Credited in the release notes. Thanks @phudayyy!",
+          "source": "https://github.com/Graphify-Labs/graphify/pull/2707#issuecomment-5281699928",
+          "by": "safishamsi",
+          "at": "2026-08-13",
+          "version": "v0.9.42"
+        },
+        {
+          "type": "commit",
+          "quote": "fix(affected): resolve a seed given as ./relative or absolute path form (#2584 follow-up)",
+          "source": "https://github.com/Graphify-Labs/graphify/commit/a05b4084d9ef7157af31af883d976515bda1f24e"
+        }
+      ],
+      "recorded_at": "2026-08-13"
+    },
+    {
       "id": "Graphify-Labs/graphify#2584",
       "numbers": [
         2584,
@@ -38,7 +101,7 @@
         {
           "type": "changelog",
           "quote": "- Fix: `affected` now traverses a dynamic `import('…')` made inside a function or at module scope (#2584, thanks @phudayyy). The 0.9.38 dedupe keyed only on the target, so an in-function dynamic import (whose symbol-level edge is anchored on the enclosing function) suppressed the file-level edge `affected` follows; the dedupe now keys on the importing file, emitting one file-level `dynamic_import` edge per file/target while keeping the call-site edge.",
-          "source": "https://github.com/Graphify-Labs/graphify/blob/50556baaea803e191947fdfcc2e0c22e2d4eb74d/CHANGELOG.md#L7",
+          "source": "https://github.com/Graphify-Labs/graphify/blob/7fe58b0b0f3873be9a21c30106b8b8527c353aa6/CHANGELOG.md#L57",
           "where": "CHANGELOG.md",
           "version": "0.9.39"
         },

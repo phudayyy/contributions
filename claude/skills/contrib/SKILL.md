@@ -88,9 +88,26 @@ node scripts/publish.mjs
 
 ## Rules that are not negotiable
 
-1. **Never merge, and never write to `main`.** `publish.mjs` pushes a branch and
-   opens a pull request; the user reads it and merges. That is the whole approval
-   gate. It refuses to commit from `main` — do not work around it.
+1. **Never write to `main` directly — but a record-only pull request you merge
+   yourself.** `publish.mjs` pushes a branch and opens the pull request; it refuses
+   to commit while `HEAD` is on `main`, and that refusal is not to be worked around.
+   What changed on 2026-08-13 is only the last step, in the user's words: *"khi thêm
+   contribute là merge luôn …, không cần chờ tôi review, khi nào có thêm sự thay đổi
+   thì cần hỏi trước"*.
+
+   The gate is now **what is in the diff**, not who clicks merge:
+
+   - **Only the record** — `data/contributions.json` plus what `render.mjs`
+     regenerates from it (`README.md`, `IN-FLIGHT.md`, `projects/*.md`) — then
+     `gh pr merge <n> --merge --delete-branch` once the evidence checks out, and
+     report the URL. Do not ask.
+   - **Anything else** — `scripts/`, `data/config.json`, `claude/`, `.gitignore` —
+     then stop after opening the pull request and **ask**, even when a record rides
+     along in the same diff. A tooling change alters how every future entry is
+     produced, and that is the review the user does want.
+
+   Rule 2 is what makes this safe to do unattended: the evidence check is a script
+   that runs before the branch exists, not a reviewer's attention afterwards.
 
 2. **No evidence, no claim.** A record may only be `merged`, `shipped` or
    `credited` if it carries at least one evidence entry with a real quote and a

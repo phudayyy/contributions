@@ -4,11 +4,11 @@ A log of my contributions to other people's open-source projects, and of where e
 acknowledged. Every credited entry carries a quote and a link to the place the credit was
 written — a changelog line, a release note, or a maintainer's own words.
 
-**2 credited contributions** across **1 project**
+**3 credited contributions** across **1 project**
 
 | Project | Credited | In flight | Shipped in | Latest |
 |---|---|---|---|---|
-| [Graphify-Labs/graphify](projects/Graphify-Labs--graphify.md) | 2 | — | v0.9.39, v0.9.38 | 2026-08-10 |
+| [Graphify-Labs/graphify](projects/Graphify-Labs--graphify.md) | 3 | — | v0.9.42, v0.9.39, v0.9.38 | 2026-08-13 |
 
 ### Why some entries say “shipped” rather than “merged”
 

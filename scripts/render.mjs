@@ -159,7 +159,15 @@ function renderRecord (r) {
   }
   if (r.links?.pr) {
     const closed = r.dates?.landed ? `, closed ${r.dates.landed}` : ''
-    const note = r.status === 'shipped' ? ' — not merged; reimplemented upstream' : ''
+    // "reimplemented" is only true when no commit of mine landed. Where the patch
+    // was applied under a maintainer's committer line but kept my authorship, the
+    // commit link is right there in the next row and calling it a reimplementation
+    // contradicts it.
+    const note = r.status === 'shipped'
+      ? (r.links?.commit
+          ? ' — not merged; the patch landed as its own commit'
+          : ' — not merged; reimplemented upstream')
+      : ''
     rows.push(['Pull request', `${link(r.links.pr, num(r.links.pr))}${closed}${note}`])
   }
   rows.push(['Commit', r.links?.commit

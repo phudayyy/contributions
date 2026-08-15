@@ -5,7 +5,8 @@
     {
       "id": "Graphify-Labs/graphify#2759",
       "numbers": [
-        2759
+        2759,
+        2769
       ],
       "project": {
         "repo": "Graphify-Labs/graphify",
@@ -20,11 +21,13 @@
       ],
       "status": "open",
       "links": {
-        "issue": "https://github.com/Graphify-Labs/graphify/issues/2759"
+        "issue": "https://github.com/Graphify-Labs/graphify/issues/2759",
+        "pr": "https://github.com/Graphify-Labs/graphify/pull/2769"
       },
       "opened_at": "2026-08-15",
       "impact": "A file the repository ships is absent from the graph with no report, so querying it returns empty — indistinguishable from the code being unused.",
-      "evidence": []
+      "evidence": [],
+      "note": "PR #2769 opened then closed unmerged on 2026-08-15: the probe caught a gap in the patch itself — the fix landed in detect() while `graphify update` reaches the same gate through extract.py, so the CLI path was untouched. Reopens once the rescue sits inside _is_ignored, where all three callers share it."
     },
     {
       "id": "Graphify-Labs/graphify#2757",

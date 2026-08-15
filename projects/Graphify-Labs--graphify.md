@@ -14,7 +14,7 @@
 | [JS/TS: `affected` cannot traverse a dynamic `import('…')` made…](#n2584) | [#2584](https://github.com/Graphify-Labs/graphify/issues/2584) | [#2588](https://github.com/Graphify-Labs/graphify/pull/2588) | Shipped | v0.9.39 | 2026-08-10 |
 | [JS/TS: `await import('…')` inside a nested function produces no…](#n2575) | [#2575](https://github.com/Graphify-Labs/graphify/issues/2575) | [#2574](https://github.com/Graphify-Labs/graphify/pull/2574) | Shipped | v0.9.38 | 2026-08-09 |
 | [JS/TS: an import from outside the corpus does not shadow indire…](#n2757) | [#2757](https://github.com/Graphify-Labs/graphify/issues/2757) | [#2758](https://github.com/Graphify-Labs/graphify/pull/2758) | In flight | — | — |
-| [A git-tracked file is silently dropped when a .gitignore patter…](#n2759) | [#2759](https://github.com/Graphify-Labs/graphify/issues/2759) | — | In flight | — | — |
+| [A git-tracked file is silently dropped when a .gitignore patter…](#n2759) | [#2759](https://github.com/Graphify-Labs/graphify/issues/2759) | [#2769](https://github.com/Graphify-Labs/graphify/pull/2769) | In flight | — | — |
 
 ## Credited
 
@@ -125,6 +125,7 @@ _Open, not yet accepted. Not counted in any total._
 | | |
 |---|---|
 | Issue | [#2759](https://github.com/Graphify-Labs/graphify/issues/2759) |
+| Pull request | [#2769](https://github.com/Graphify-Labs/graphify/pull/2769) |
 | Commit | — |
 
 **Impact.** A file the repository ships is absent from the graph with no report, so querying it returns empty — indistinguishable from the code being unused.

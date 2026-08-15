@@ -2,7 +2,7 @@
 
 > Turn any codebase, with its docs, SQL schemas, configs, and PDFs, into a queryable knowledge graph. A /graphify skill for Claude Code, Cursor, Codex, and Gemini CLI: local deterministic AST parsing, every edge explained, no vector store.
 
-**3 credited** · shipped in v0.9.42, v0.9.39, v0.9.38 · first 2026-08-09 · latest 2026-08-13
+**3 credited** · 1 in flight · shipped in v0.9.42, v0.9.39, v0.9.38 · first 2026-08-09 · latest 2026-08-13
 
 [Graphify-Labs/graphify on GitHub](https://github.com/Graphify-Labs/graphify)
 
@@ -13,6 +13,7 @@
 | [`affected` silently returns nothing when the seed path is spell…](#n2706) | [#2706](https://github.com/Graphify-Labs/graphify/issues/2706) | [#2707](https://github.com/Graphify-Labs/graphify/pull/2707) | Shipped | v0.9.42 | 2026-08-13 |
 | [JS/TS: `affected` cannot traverse a dynamic `import('…')` made…](#n2584) | [#2584](https://github.com/Graphify-Labs/graphify/issues/2584) | [#2588](https://github.com/Graphify-Labs/graphify/pull/2588) | Shipped | v0.9.39 | 2026-08-10 |
 | [JS/TS: `await import('…')` inside a nested function produces no…](#n2575) | [#2575](https://github.com/Graphify-Labs/graphify/issues/2575) | [#2574](https://github.com/Graphify-Labs/graphify/pull/2574) | Shipped | v0.9.38 | 2026-08-09 |
+| [JS/TS: an import from outside the corpus does not shadow indire…](#n2757) | [#2757](https://github.com/Graphify-Labs/graphify/issues/2757) | [#2758](https://github.com/Graphify-Labs/graphify/pull/2758) | In flight | — | — |
 
 ## Credited
 
@@ -95,6 +96,24 @@
   <br>— [Maintainer @safishamsi](https://github.com/Graphify-Labs/graphify/issues/2575#issuecomment-5234169255)
 
 </details>
+
+## In flight
+
+_Open, not yet accepted. Not counted in any total._
+
+<a id="n2757"></a>
+
+### JS/TS: an import from outside the corpus does not shadow indirect_call resolution, fabricating cross-package edges
+
+`open` · bugfix · reporter + author
+
+| | |
+|---|---|
+| Issue | [#2757](https://github.com/Graphify-Labs/graphify/issues/2757) |
+| Pull request | [#2758](https://github.com/Graphify-Labs/graphify/pull/2758) |
+| Commit | — |
+
+**Impact.** A name imported from an external package could be resolved to an unrelated same-named definition elsewhere in the corpus, inventing cross-package edges that then lead the "Surprising Connections" report.
 
 ---
 

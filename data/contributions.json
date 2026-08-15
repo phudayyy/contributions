@@ -3,6 +3,30 @@
   "note": "Source of truth. projects/*.md and README.md are rendered from this file by scripts/render.mjs and must never be hand-edited.",
   "records": [
     {
+      "id": "Graphify-Labs/graphify#2759",
+      "numbers": [
+        2759
+      ],
+      "project": {
+        "repo": "Graphify-Labs/graphify",
+        "name": "graphify",
+        "url": "https://github.com/Graphify-Labs/graphify",
+        "description": "Turn any codebase, with its docs, SQL schemas, configs, and PDFs, into a queryable knowledge graph. A /graphify skill for Claude Code, Cursor, Codex, and Gemini CLI: local deterministic AST parsing, every edge explained, no vector store."
+      },
+      "title": "A git-tracked file is silently dropped when a .gitignore pattern matches it",
+      "kind": "bugreport",
+      "role": [
+        "reporter"
+      ],
+      "status": "open",
+      "links": {
+        "issue": "https://github.com/Graphify-Labs/graphify/issues/2759"
+      },
+      "opened_at": "2026-08-15",
+      "impact": "A file the repository ships is absent from the graph with no report, so querying it returns empty — indistinguishable from the code being unused.",
+      "evidence": []
+    },
+    {
       "id": "Graphify-Labs/graphify#2757",
       "numbers": [
         2757,

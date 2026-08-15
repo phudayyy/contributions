@@ -2,7 +2,7 @@
 
 > Turn any codebase, with its docs, SQL schemas, configs, and PDFs, into a queryable knowledge graph. A /graphify skill for Claude Code, Cursor, Codex, and Gemini CLI: local deterministic AST parsing, every edge explained, no vector store.
 
-**3 credited** · 1 in flight · shipped in v0.9.42, v0.9.39, v0.9.38 · first 2026-08-09 · latest 2026-08-13
+**3 credited** · 2 in flight · shipped in v0.9.42, v0.9.39, v0.9.38 · first 2026-08-09 · latest 2026-08-13
 
 [Graphify-Labs/graphify on GitHub](https://github.com/Graphify-Labs/graphify)
 
@@ -14,6 +14,7 @@
 | [JS/TS: `affected` cannot traverse a dynamic `import('…')` made…](#n2584) | [#2584](https://github.com/Graphify-Labs/graphify/issues/2584) | [#2588](https://github.com/Graphify-Labs/graphify/pull/2588) | Shipped | v0.9.39 | 2026-08-10 |
 | [JS/TS: `await import('…')` inside a nested function produces no…](#n2575) | [#2575](https://github.com/Graphify-Labs/graphify/issues/2575) | [#2574](https://github.com/Graphify-Labs/graphify/pull/2574) | Shipped | v0.9.38 | 2026-08-09 |
 | [JS/TS: an import from outside the corpus does not shadow indire…](#n2757) | [#2757](https://github.com/Graphify-Labs/graphify/issues/2757) | [#2758](https://github.com/Graphify-Labs/graphify/pull/2758) | In flight | — | — |
+| [A git-tracked file is silently dropped when a .gitignore patter…](#n2759) | [#2759](https://github.com/Graphify-Labs/graphify/issues/2759) | — | In flight | — | — |
 
 ## Credited
 
@@ -114,6 +115,19 @@ _Open, not yet accepted. Not counted in any total._
 | Commit | — |
 
 **Impact.** A name imported from an external package could be resolved to an unrelated same-named definition elsewhere in the corpus, inventing cross-package edges that then lead the "Surprising Connections" report.
+
+<a id="n2759"></a>
+
+### A git-tracked file is silently dropped when a .gitignore pattern matches it
+
+`open` · bugreport · reporter
+
+| | |
+|---|---|
+| Issue | [#2759](https://github.com/Graphify-Labs/graphify/issues/2759) |
+| Commit | — |
+
+**Impact.** A file the repository ships is absent from the graph with no report, so querying it returns empty — indistinguishable from the code being unused.
 
 ---
 

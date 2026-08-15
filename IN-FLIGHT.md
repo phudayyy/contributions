@@ -4,13 +4,14 @@ Work I have open upstream that has **not been accepted yet**. Nothing on this pa
 of credit. An entry leaves here the moment it is merged, shipped, or credited, and moves to its
 project page with the evidence attached.
 
-**1 open** across **1 project**
+**2 open** across **1 project**
 
-## [Graphify-Labs/graphify](projects/Graphify-Labs--graphify.md) · 1 open
+## [Graphify-Labs/graphify](projects/Graphify-Labs--graphify.md) · 2 open
 
 | What | Issue | Pull request | Opened | Age |
 |---|---|---|---|---|
 | [JS/TS: an import from outside the corpus does not shadow…](projects/Graphify-Labs--graphify.md#n2757) | [#2757](https://github.com/Graphify-Labs/graphify/issues/2757) | [#2758](https://github.com/Graphify-Labs/graphify/pull/2758) | — | — |
+| [A git-tracked file is silently dropped when a .gitignore…](projects/Graphify-Labs--graphify.md#n2759) | [#2759](https://github.com/Graphify-Labs/graphify/issues/2759) | — | — | — |
 
 ---
 

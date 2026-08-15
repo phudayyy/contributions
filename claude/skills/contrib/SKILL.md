@@ -32,15 +32,25 @@ So the ledger records **evidence**, and status follows from it:
 | `open` | still in flight; lives in `IN-FLIGHT.md`, counted in no total |
 | `closed-unshipped` | closed without shipping; kept, because an honest log keeps it |
 
-## Only credit opens a pull request
+## Credit is what WAKES you — it is not what you are allowed to publish
 
-The session-start hook wakes you **only when something was newly credited**. An open pull request
-upstream is not an achievement and its state changes every few days, so a pull request about it
-would be a review that says nothing. In-flight findings are still written to the ledger and rendered
-into `IN-FLIGHT.md` — they just ride along with the next run that has real credit in it.
+The session-start hook fires **only when something was newly credited**, and that is the right
+trigger: an open pull request upstream is not an achievement and its state changes every few days,
+so nobody should be woken for it.
 
-So: never open a pull request carrying nothing but `open` records. If a manual `/contrib` finds only
-in-flight work, say so and stop without publishing.
+⚠️ **That is a rule about the alarm, not about the ledger.** It used to end "never open a pull
+request carrying nothing but `open` records… say so and stop without publishing", and following that
+sentence produced a page that was publicly wrong: on 2026-08-15 `IN-FLIGHT.md` read *"Nothing open
+right now"* while `Graphify-Labs/graphify#2757` and `#2758` were both open upstream, because the
+record was written and then parked waiting for credit that had not happened yet.
+
+The reason behind the old wording was the user's **review time** — a pull request full of `open`
+records is a review that says nothing. Rule 1 below removes that cost entirely: a record-only diff
+is merged without asking, so nobody is being asked to read it. The reason no longer reaches the case.
+
+So: **an in-flight record is written, rendered, published and merged like any other record-only
+change.** What still stops and asks is decided by the diff (rule 1), never by whether the entry
+carries credit. A manual `/contrib` that finds only in-flight work publishes it and says so.
 
 ## Running it
 

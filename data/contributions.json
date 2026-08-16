@@ -19,7 +19,7 @@
       "role": [
         "reporter"
       ],
-      "status": "open",
+      "status": "closed-unshipped",
       "links": {
         "issue": "https://github.com/Graphify-Labs/graphify/issues/2759",
         "pr": "https://github.com/Graphify-Labs/graphify/pull/2769"
@@ -27,7 +27,7 @@
       "opened_at": "2026-08-15",
       "impact": "A file the repository ships is absent from the graph with no report, so querying it returns empty — indistinguishable from the code being unused.",
       "evidence": [],
-      "note": "PR #2769 was opened, closed unmerged, and reopened the same day. The probe caught a gap in the first patch: it fixed detect() while `graphify update` reaches the same gate through extract.py, so the path an engineer actually runs was untouched. The exemption now lives inside `_is_ignored` itself, where all three callers share it; the reopened PR carries both commits."
+      "note": "Reported by us and fixed upstream in v0.9.44 (95ad0ad, 3460500), but the changelog credits @NithishKumar04, not us — our PR #2769 closed unmerged. The behaviour we asked for is in the release; the credit is not ours, so nothing here claims it. Recorded so the log stays honest about what we did and did not get credit for."
     },
     {
       "id": "Graphify-Labs/graphify#2757",
@@ -47,14 +47,28 @@
         "reporter",
         "author"
       ],
-      "status": "open",
+      "status": "shipped",
       "links": {
         "issue": "https://github.com/Graphify-Labs/graphify/issues/2757",
-        "pr": "https://github.com/Graphify-Labs/graphify/pull/2758"
+        "pr": "https://github.com/Graphify-Labs/graphify/pull/2758",
+        "commit": "https://github.com/Graphify-Labs/graphify/commit/ceeafb0"
       },
       "opened_at": "2026-08-15",
       "impact": "A name imported from an external package could be resolved to an unrelated same-named definition elsewhere in the corpus, inventing cross-package edges that then lead the \"Surprising Connections\" report.",
-      "evidence": []
+      "evidence": [
+        {
+          "quote": "Fix: a JS/TS identifier bound by an import whose target resolves outside the scanned corpus (e.g. a `lucide-react` icon) is now shadowed, so using it as a value no longer fabricates an INFERRED `indirect_call` onto an unrelated same-named callable elsewhere in the corpus; a relative/in-corpus import still resolves to its real target (#2757, thanks @phudayyy).",
+          "type": "changelog",
+          "source": "https://github.com/Graphify-Labs/graphify/blob/4fca621/CHANGELOG.md"
+        },
+        {
+          "quote": "Fix: a JS/TS identifier bound by an import whose target resolves outside the scanned corpus (e.g. a `lucide-react` icon) is now shadowed, so using it as a value no longer fabricates an INFERRED `indirect_call` onto an unrelated same-named callable elsewhere in the corpus; a relative/in-corpus import still resolves to its real target (#2757, thanks @phudayyy).",
+          "type": "release-notes",
+          "source": "https://github.com/Graphify-Labs/graphify/releases/tag/v0.9.44"
+        }
+      ],
+      "shipped_in": "v0.9.44",
+      "note": "PR #2758 closed unmerged; the maintainer reimplemented the fix as ceeafb0 with a test in 94c2050, both referencing the issue, and credited it in the changelog. Exactly the shape a merge-state tracker scores zero."
     },
     {
       "id": "Graphify-Labs/graphify#2706",

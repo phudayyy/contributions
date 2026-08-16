@@ -24,10 +24,13 @@
         "issue": "https://github.com/Graphify-Labs/graphify/issues/2759",
         "pr": "https://github.com/Graphify-Labs/graphify/pull/2769"
       },
-      "opened_at": "2026-08-15",
       "impact": "A file the repository ships is absent from the graph with no report, so querying it returns empty — indistinguishable from the code being unused.",
       "evidence": [],
-      "note": "Reported by us and fixed upstream in v0.9.44 (95ad0ad, 3460500), but the changelog credits @NithishKumar04, not us — our PR #2769 closed unmerged. The behaviour we asked for is in the release; the credit is not ours, so nothing here claims it. Recorded so the log stays honest about what we did and did not get credit for."
+      "note": "Reported by us and fixed upstream in v0.9.44 (95ad0ad, 3460500), but the changelog credits @NithishKumar04, not us — our PR #2769 closed unmerged. The behaviour we asked for is in the release; the credit is not ours, so nothing here claims it. Recorded so the log stays honest about what we did and did not get credit for.",
+      "dates": {
+        "opened": "2026-08-15",
+        "closed": "2026-08-16"
+      }
     },
     {
       "id": "Graphify-Labs/graphify#2757",
@@ -53,7 +56,6 @@
         "pr": "https://github.com/Graphify-Labs/graphify/pull/2758",
         "commit": "https://github.com/Graphify-Labs/graphify/commit/ceeafb0"
       },
-      "opened_at": "2026-08-15",
       "impact": "A name imported from an external package could be resolved to an unrelated same-named definition elsewhere in the corpus, inventing cross-package edges that then lead the \"Surprising Connections\" report.",
       "evidence": [
         {
@@ -68,7 +70,12 @@
         }
       ],
       "shipped_in": "v0.9.44",
-      "note": "PR #2758 closed unmerged; the maintainer reimplemented the fix as ceeafb0 with a test in 94c2050, both referencing the issue, and credited it in the changelog. Exactly the shape a merge-state tracker scores zero."
+      "note": "PR #2758 closed unmerged; the maintainer reimplemented the fix as ceeafb0 with a test in 94c2050, both referencing the issue, and credited it in the changelog. Exactly the shape a merge-state tracker scores zero.",
+      "dates": {
+        "opened": "2026-08-15",
+        "landed": "2026-08-16",
+        "released": "2026-08-16"
+      }
     },
     {
       "id": "Graphify-Labs/graphify#2706",

@@ -2,7 +2,7 @@
 
 > Turn any codebase, with its docs, SQL schemas, configs, and PDFs, into a queryable knowledge graph. A /graphify skill for Claude Code, Cursor, Codex, and Gemini CLI: local deterministic AST parsing, every edge explained, no vector store.
 
-**4 credited** · 1 not adopted · shipped in v0.9.44, v0.9.42, v0.9.39, v0.9.38 · first 2026-08-09 · latest 2026-08-13
+**4 credited** · 1 not adopted · shipped in v0.9.44, v0.9.42, v0.9.39, v0.9.38 · first 2026-08-09 · latest 2026-08-16
 
 [Graphify-Labs/graphify on GitHub](https://github.com/Graphify-Labs/graphify)
 
@@ -10,13 +10,35 @@
 
 | Contribution | Issue | Pull request | Status | Shipped in | Landed |
 |---|---|---|---|---|---|
+| [JS/TS: an import from outside the corpus does not shadow indire…](#n2757) | [#2757](https://github.com/Graphify-Labs/graphify/issues/2757) | [#2758](https://github.com/Graphify-Labs/graphify/pull/2758) | Shipped | v0.9.44 | 2026-08-16 |
 | [`affected` silently returns nothing when the seed path is spell…](#n2706) | [#2706](https://github.com/Graphify-Labs/graphify/issues/2706) | [#2707](https://github.com/Graphify-Labs/graphify/pull/2707) | Shipped | v0.9.42 | 2026-08-13 |
 | [JS/TS: `affected` cannot traverse a dynamic `import('…')` made…](#n2584) | [#2584](https://github.com/Graphify-Labs/graphify/issues/2584) | [#2588](https://github.com/Graphify-Labs/graphify/pull/2588) | Shipped | v0.9.39 | 2026-08-10 |
 | [JS/TS: `await import('…')` inside a nested function produces no…](#n2575) | [#2575](https://github.com/Graphify-Labs/graphify/issues/2575) | [#2574](https://github.com/Graphify-Labs/graphify/pull/2574) | Shipped | v0.9.38 | 2026-08-09 |
-| [JS/TS: an import from outside the corpus does not shadow indire…](#n2757) | [#2757](https://github.com/Graphify-Labs/graphify/issues/2757) | [#2758](https://github.com/Graphify-Labs/graphify/pull/2758) | Shipped | v0.9.44 | — |
 | [A git-tracked file is silently dropped when a .gitignore patter…](#n2759) | [#2759](https://github.com/Graphify-Labs/graphify/issues/2759) | [#2769](https://github.com/Graphify-Labs/graphify/pull/2769) | Not adopted | — | — |
 
 ## Credited
+
+<a id="n2757"></a>
+
+### JS/TS: an import from outside the corpus does not shadow indirect_call resolution, fabricating cross-package edges
+
+`shipped` · bugfix · reporter + author · released in **v0.9.44**
+
+| | |
+|---|---|
+| Issue | [#2757](https://github.com/Graphify-Labs/graphify/issues/2757) — reported 2026-08-15 |
+| Pull request | [#2758](https://github.com/Graphify-Labs/graphify/pull/2758), closed 2026-08-16 — not merged; the patch landed as its own commit |
+| Commit | [ceeafb0](https://github.com/Graphify-Labs/graphify/commit/ceeafb0) |
+| Release | — — 2026-08-16 |
+
+**Impact.** A name imported from an external package could be resolved to an unrelated same-named definition elsewhere in the corpus, inventing cross-package edges that then lead the "Surprising Connections" report.
+
+<details><summary>Evidence</summary>
+
+- “Fix: a JS/TS identifier bound by an import whose target resolves outside the scanned corpus (e.g. a `lucide-react` icon) is now shadowed, so using it as a value no longer fabricates an INFERRED `indirect_call` onto an unrelated same-named callable elsewhere in the corpus; a relative/in-corpus import still resolves to its real target (#2757, thanks @phudayyy).”
+  <br>— [Changelog](https://github.com/Graphify-Labs/graphify/blob/4fca621/CHANGELOG.md) · [Release notes](https://github.com/Graphify-Labs/graphify/releases/tag/v0.9.44)
+
+</details>
 
 <a id="n2706"></a>
 
@@ -98,27 +120,6 @@
 
 </details>
 
-<a id="n2757"></a>
-
-### JS/TS: an import from outside the corpus does not shadow indirect_call resolution, fabricating cross-package edges
-
-`shipped` · bugfix · reporter + author · released in **v0.9.44**
-
-| | |
-|---|---|
-| Issue | [#2757](https://github.com/Graphify-Labs/graphify/issues/2757) |
-| Pull request | [#2758](https://github.com/Graphify-Labs/graphify/pull/2758) — not merged; the patch landed as its own commit |
-| Commit | [ceeafb0](https://github.com/Graphify-Labs/graphify/commit/ceeafb0) |
-
-**Impact.** A name imported from an external package could be resolved to an unrelated same-named definition elsewhere in the corpus, inventing cross-package edges that then lead the "Surprising Connections" report.
-
-<details><summary>Evidence</summary>
-
-- “Fix: a JS/TS identifier bound by an import whose target resolves outside the scanned corpus (e.g. a `lucide-react` icon) is now shadowed, so using it as a value no longer fabricates an INFERRED `indirect_call` onto an unrelated same-named callable elsewhere in the corpus; a relative/in-corpus import still resolves to its real target (#2757, thanks @phudayyy).”
-  <br>— [Changelog](https://github.com/Graphify-Labs/graphify/blob/4fca621/CHANGELOG.md) · [Release notes](https://github.com/Graphify-Labs/graphify/releases/tag/v0.9.44)
-
-</details>
-
 ## Not adopted
 
 <a id="n2759"></a>
@@ -129,7 +130,7 @@
 
 | | |
 |---|---|
-| Issue | [#2759](https://github.com/Graphify-Labs/graphify/issues/2759) |
+| Issue | [#2759](https://github.com/Graphify-Labs/graphify/issues/2759) — reported 2026-08-15 |
 | Pull request | [#2769](https://github.com/Graphify-Labs/graphify/pull/2769) |
 | Commit | — |
 

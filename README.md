@@ -8,7 +8,7 @@ written — a changelog line, a release note, or a maintainer's own words.
 
 | Project | Credited | In flight | Not adopted | Shipped in | Latest |
 |---|---|---|---|---|---|
-| [Graphify-Labs/graphify](projects/Graphify-Labs--graphify.md) | 4 | — | 1 | v0.9.44, v0.9.42, v0.9.39, v0.9.38 | 2026-08-13 |
+| [Graphify-Labs/graphify](projects/Graphify-Labs--graphify.md) | 4 | — | 1 | v0.9.44, v0.9.42, v0.9.39, v0.9.38 | 2026-08-16 |
 
 ### What “not adopted” means, and why it is counted here
 

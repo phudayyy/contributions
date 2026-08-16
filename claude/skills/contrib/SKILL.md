@@ -124,6 +124,28 @@ node scripts/publish.mjs
    resolvable URL. `render.mjs` exits non-zero otherwise; that check is the point,
    so fix the record, never the check.
 
+   The shape it demands, because guessing it costs a round trip — measured
+   2026-08-15, a record written with `signal`/`url` was rejected with
+   `evidence[1] has unknown type "undefined"`, which names the field it wanted
+   without naming the one you used:
+
+   ```json
+   { "type": "changelog",
+     "quote": "…the line as written, verbatim…",
+     "source": "https://github.com/OWNER/REPO/blob/<sha>/CHANGELOG.md" }
+   ```
+
+   `type` must be one of `merged-pr` · `commit` · `changelog` · `release-notes` ·
+   `maintainer-thanks` · `credit-file` (`EVIDENCE_LABEL` in `render.mjs`), and
+   `source` must start `http`. **Pin the link to a SHA**, not to a branch: a
+   changelog line quoted from `main` stops matching the moment `main` moves, and
+   an evidence entry whose quote no longer appears at its URL is worse than none.
+
+   ⚠️ `closed-unshipped` takes **no evidence block at all**. It is the status for
+   work that was reported and reached a release while the credit went elsewhere —
+   `#2759` is the worked example: fixed in v0.9.44, changelog thanks a different
+   contributor. Nothing is claimed, so nothing is quoted.
+
 3. **Quote what is written, not what it implies.** Copy the changelog line or the
    maintainer's sentence verbatim. Do not paraphrase into something stronger, and
    do not write an evidence entry you have not actually read.

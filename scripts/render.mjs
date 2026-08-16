@@ -399,12 +399,16 @@ if (records.length === 0) {
   readme.push('_Nothing recorded yet._')
   readme.push('')
 } else {
+  const notAdoptedAll = records.filter((r) => r.status === 'closed-unshipped')
   readme.push(`**${credited.length} credited contribution${credited.length === 1 ? '' : 's'}** across ` +
     `**${projectCount} project${projectCount === 1 ? '' : 's'}**` +
-    (inFlight.length ? ` · [${inFlight.length} in flight](IN-FLIGHT.md)` : ''))
+    (inFlight.length ? ` · [${inFlight.length} in flight](IN-FLIGHT.md)` : '') +
+    // Số này ở ngay dòng đầu, cạnh số credited, chứ không giấu trong trang project. Một cuốn sổ
+    // chỉ liệt kê chiến thắng thì không phải cuốn sổ — và cột dưới sẽ vô nghĩa nếu tổng không nhắc.
+    (notAdoptedAll.length ? ` · ${notAdoptedAll.length} not adopted` : ''))
   readme.push('')
-  readme.push('| Project | Credited | In flight | Shipped in | Latest |')
-  readme.push('|---|---|---|---|---|')
+  readme.push('| Project | Credited | In flight | Not adopted | Shipped in | Latest |')
+  readme.push('|---|---|---|---|---|---|')
   const rows = [...byRepo.entries()].sort((a, b) => {
     const ac = a[1].filter((r) => CREDITED.has(r.status)).length
     const bc = b[1].filter((r) => CREDITED.has(r.status)).length
@@ -415,9 +419,24 @@ if (records.length === 0) {
     const f = list.filter((r) => r.status === 'open').length
     const versions = [...new Set(list.map((r) => r.shipped_in).filter(Boolean))].join(', ') || '—'
     const latest = list.flatMap((r) => Object.values(r.dates ?? {})).filter(Boolean).sort().pop() ?? '—'
-    readme.push(`| [${repo}](projects/${slug(repo)}.md) | ${c} | ${f || '—'} | ${versions} | ${latest} |`)
+    const na = list.filter((r) => r.status === 'closed-unshipped').length
+    readme.push(`| [${repo}](projects/${slug(repo)}.md) | ${c} | ${f || '—'} | ${na || '—'} | ${versions} | ${latest} |`)
   }
   readme.push('')
+
+  if (notAdoptedAll.length) {
+    readme.push('### What “not adopted” means, and why it is counted here')
+    readme.push('')
+    readme.push('An entry sits here when the work was reported and the behaviour reached a release, but the')
+    readme.push('credit went elsewhere — a different contributor\'s patch was taken, or the maintainer wrote')
+    readme.push('their own and thanked someone else. The pull request is closed with no merge, and no quote')
+    readme.push('names me, so nothing is claimed: `render.mjs` refuses an evidence block on these.')
+    readme.push('')
+    readme.push('They are counted anyway. A log that lists only the wins is a scoreboard, not a record — and')
+    readme.push('the same evidence rule that lets a `shipped` entry stand without a merge is what forces this')
+    readme.push('one to stand without a claim.')
+    readme.push('')
+  }
 
   const shipped = records.filter((r) => r.status === 'shipped')
   if (shipped.length) {

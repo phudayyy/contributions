@@ -32,15 +32,25 @@ So the ledger records **evidence**, and status follows from it:
 | `open` | still in flight; lives in `IN-FLIGHT.md`, counted in no total |
 | `closed-unshipped` | closed without shipping; kept, because an honest log keeps it |
 
-## Only credit opens a pull request
+## Credit is what WAKES you — it is not what you are allowed to publish
 
-The session-start hook wakes you **only when something was newly credited**. An open pull request
-upstream is not an achievement and its state changes every few days, so a pull request about it
-would be a review that says nothing. In-flight findings are still written to the ledger and rendered
-into `IN-FLIGHT.md` — they just ride along with the next run that has real credit in it.
+The session-start hook fires **only when something was newly credited**, and that is the right
+trigger: an open pull request upstream is not an achievement and its state changes every few days,
+so nobody should be woken for it.
 
-So: never open a pull request carrying nothing but `open` records. If a manual `/contrib` finds only
-in-flight work, say so and stop without publishing.
+⚠️ **That is a rule about the alarm, not about the ledger.** It used to end "never open a pull
+request carrying nothing but `open` records… say so and stop without publishing", and following that
+sentence produced a page that was publicly wrong: on 2026-08-15 `IN-FLIGHT.md` read *"Nothing open
+right now"* while `Graphify-Labs/graphify#2757` and `#2758` were both open upstream, because the
+record was written and then parked waiting for credit that had not happened yet.
+
+The reason behind the old wording was the user's **review time** — a pull request full of `open`
+records is a review that says nothing. Rule 1 below removes that cost entirely: a record-only diff
+is merged without asking, so nobody is being asked to read it. The reason no longer reaches the case.
+
+So: **an in-flight record is written, rendered, published and merged like any other record-only
+change.** What still stops and asks is decided by the diff (rule 1), never by whether the entry
+carries credit. A manual `/contrib` that finds only in-flight work publishes it and says so.
 
 ## Running it
 
@@ -88,14 +98,53 @@ node scripts/publish.mjs
 
 ## Rules that are not negotiable
 
-1. **Never merge, and never write to `main`.** `publish.mjs` pushes a branch and
-   opens a pull request; the user reads it and merges. That is the whole approval
-   gate. It refuses to commit from `main` — do not work around it.
+1. **Never write to `main` directly — but a record-only pull request you merge
+   yourself.** `publish.mjs` pushes a branch and opens the pull request; it refuses
+   to commit while `HEAD` is on `main`, and that refusal is not to be worked around.
+   What changed on 2026-08-13 is only the last step, in the user's words: *"khi thêm
+   contribute là merge luôn …, không cần chờ tôi review, khi nào có thêm sự thay đổi
+   thì cần hỏi trước"*.
+
+   The gate is now **what is in the diff**, not who clicks merge:
+
+   - **Only the record** — `data/contributions.json` plus what `render.mjs`
+     regenerates from it (`README.md`, `IN-FLIGHT.md`, `projects/*.md`) — then
+     `gh pr merge <n> --merge --delete-branch` once the evidence checks out, and
+     report the URL. Do not ask.
+   - **Anything else** — `scripts/`, `data/config.json`, `claude/`, `.gitignore` —
+     then stop after opening the pull request and **ask**, even when a record rides
+     along in the same diff. A tooling change alters how every future entry is
+     produced, and that is the review the user does want.
+
+   Rule 2 is what makes this safe to do unattended: the evidence check is a script
+   that runs before the branch exists, not a reviewer's attention afterwards.
 
 2. **No evidence, no claim.** A record may only be `merged`, `shipped` or
    `credited` if it carries at least one evidence entry with a real quote and a
    resolvable URL. `render.mjs` exits non-zero otherwise; that check is the point,
    so fix the record, never the check.
+
+   The shape it demands, because guessing it costs a round trip — measured
+   2026-08-15, a record written with `signal`/`url` was rejected with
+   `evidence[1] has unknown type "undefined"`, which names the field it wanted
+   without naming the one you used:
+
+   ```json
+   { "type": "changelog",
+     "quote": "…the line as written, verbatim…",
+     "source": "https://github.com/OWNER/REPO/blob/<sha>/CHANGELOG.md" }
+   ```
+
+   `type` must be one of `merged-pr` · `commit` · `changelog` · `release-notes` ·
+   `maintainer-thanks` · `credit-file` (`EVIDENCE_LABEL` in `render.mjs`), and
+   `source` must start `http`. **Pin the link to a SHA**, not to a branch: a
+   changelog line quoted from `main` stops matching the moment `main` moves, and
+   an evidence entry whose quote no longer appears at its URL is worse than none.
+
+   ⚠️ `closed-unshipped` takes **no evidence block at all**. It is the status for
+   work that was reported and reached a release while the credit went elsewhere —
+   `#2759` is the worked example: fixed in v0.9.44, changelog thanks a different
+   contributor. Nothing is claimed, so nothing is quoted.
 
 3. **Quote what is written, not what it implies.** Copy the changelog line or the
    maintainer's sentence verbatim. Do not paraphrase into something stronger, and

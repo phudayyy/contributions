@@ -14,23 +14,37 @@
         "url": "https://github.com/Graphify-Labs/graphify",
         "description": "Turn any codebase, with its docs, SQL schemas, configs, and PDFs, into a queryable knowledge graph. A /graphify skill for Claude Code, Cursor, Codex, and Gemini CLI: local deterministic AST parsing, every edge explained, no vector store."
       },
-      "title": "A git-tracked file is silently dropped when a .gitignore pattern matches it",
+      "title": "A git-TRACKED file is silently dropped when a .gitignore pattern matches it (git itself does not ignore tracked paths)",
       "kind": "bugreport",
       "role": [
-        "reporter"
+        "reporter",
+        "author"
       ],
-      "status": "closed-unshipped",
+      "status": "credited",
+      "shipped_in": "v0.9.44",
       "links": {
         "issue": "https://github.com/Graphify-Labs/graphify/issues/2759",
-        "pr": "https://github.com/Graphify-Labs/graphify/pull/2769"
+        "pr": "https://github.com/Graphify-Labs/graphify/pull/2769",
+        "commit": null,
+        "release": null
       },
-      "impact": "A file the repository ships is absent from the graph with no report, so querying it returns empty — indistinguishable from the code being unused.",
-      "evidence": [],
-      "note": "Reported by us and fixed upstream in v0.9.44 (95ad0ad, 3460500), but the changelog credits @NithishKumar04, not us — our PR #2769 closed unmerged. The behaviour we asked for is in the release; the credit is not ours, so nothing here claims it. Recorded so the log stays honest about what we did and did not get credit for.",
       "dates": {
         "opened": "2026-08-15",
-        "closed": "2026-08-16"
-      }
+        "landed": "2026-08-15",
+        "released": null
+      },
+      "impact": "A git-tracked file matched by a .gitignore pattern was dropped from the graph with no report, so querying it returned empty — indistinguishable from the code being unused; fixed in v0.9.44 under another contributor pull request.",
+      "evidence": [
+        {
+          "type": "maintainer-thanks",
+          "quote": "Thanks @phudayyy for this. We had two PRs fixing the same bug (#2759), and we landed #2766 for it, which is now released in v0.9.44. Since the fix is shipped, closing this one as superseded. Really appreciate you digging into it, and hope to see more contributions.",
+          "source": "https://github.com/Graphify-Labs/graphify/pull/2769#issuecomment-5304298204",
+          "by": "safishamsi",
+          "at": "2026-08-15",
+          "version": "v0.9.44"
+        }
+      ],
+      "already_recorded": true
     },
     {
       "id": "Graphify-Labs/graphify#2757",
@@ -51,32 +65,49 @@
         "author"
       ],
       "status": "shipped",
+      "shipped_in": "v0.9.44",
       "links": {
         "issue": "https://github.com/Graphify-Labs/graphify/issues/2757",
         "pr": "https://github.com/Graphify-Labs/graphify/pull/2758",
-        "commit": "https://github.com/Graphify-Labs/graphify/commit/ceeafb0"
+        "commit": "https://github.com/Graphify-Labs/graphify/commit/ceeafb05ce2c864bc46b4f8085585ea05030dc64",
+        "release": "https://github.com/Graphify-Labs/graphify/releases/tag/v0.9.44"
+      },
+      "dates": {
+        "opened": "2026-08-15",
+        "landed": "2026-08-15",
+        "released": "2026-08-15"
       },
       "impact": "A name imported from an external package could be resolved to an unrelated same-named definition elsewhere in the corpus, inventing cross-package edges that then lead the \"Surprising Connections\" report.",
       "evidence": [
         {
-          "quote": "Fix: a JS/TS identifier bound by an import whose target resolves outside the scanned corpus (e.g. a `lucide-react` icon) is now shadowed, so using it as a value no longer fabricates an INFERRED `indirect_call` onto an unrelated same-named callable elsewhere in the corpus; a relative/in-corpus import still resolves to its real target (#2757, thanks @phudayyy).",
           "type": "changelog",
-          "source": "https://github.com/Graphify-Labs/graphify/blob/4fca621/CHANGELOG.md"
+          "quote": "- Fix: a JS/TS identifier bound by an import whose target resolves outside the scanned corpus (e.g. a `lucide-react` icon) is now shadowed, so using it as a value no longer fabricates an INFERRED `indirect_call` onto an unrelated same-named callable elsewhere in the corpus; a relative/in-corpus import still resolves to its real target (#2757, thanks @phudayyy).",
+          "source": "https://github.com/Graphify-Labs/graphify/blob/281ccaa4ff38aaef3f19e823fb7645e19b28f591/CHANGELOG.md#L116",
+          "where": "CHANGELOG.md",
+          "version": "0.9.44"
         },
         {
-          "quote": "Fix: a JS/TS identifier bound by an import whose target resolves outside the scanned corpus (e.g. a `lucide-react` icon) is now shadowed, so using it as a value no longer fabricates an INFERRED `indirect_call` onto an unrelated same-named callable elsewhere in the corpus; a relative/in-corpus import still resolves to its real target (#2757, thanks @phudayyy).",
           "type": "release-notes",
-          "source": "https://github.com/Graphify-Labs/graphify/releases/tag/v0.9.44"
+          "quote": "- Fix: a JS/TS identifier bound by an import whose target resolves outside the scanned corpus (e.g. a `lucide-react` icon) is now shadowed, so using it as a value no longer fabricates an INFERRED `indirect_call` onto an unrelated same-named callable elsewhere in the corpus; a relative/in-corpus import still resolves to its real target (#2757, thanks @phudayyy).",
+          "source": "https://github.com/Graphify-Labs/graphify/releases/tag/v0.9.44",
+          "version": "v0.9.44",
+          "published": "2026-08-15"
         },
         {
           "type": "maintainer-thanks",
           "quote": "Landed in v0.9.44, just published to PyPI. I cherry-picked this onto `v8` with your authorship preserved in the commit, so both the change and the credit are in the history. Thanks @phudayyy for the fix. Closing since it is now released.",
-          "source": "https://github.com/Graphify-Labs/graphify/pull/2758#issuecomment-5304293751"
+          "source": "https://github.com/Graphify-Labs/graphify/pull/2758#issuecomment-5304293751",
+          "by": "safishamsi",
+          "at": "2026-08-15",
+          "version": "v0.9.44"
         },
         {
           "type": "maintainer-thanks",
           "quote": "Fixed in v0.9.44 (on PyPI now) via #2758, thanks @phudayyy. Closing.",
-          "source": "https://github.com/Graphify-Labs/graphify/issues/2757#issuecomment-5304295282"
+          "source": "https://github.com/Graphify-Labs/graphify/issues/2757#issuecomment-5304295282",
+          "by": "safishamsi",
+          "at": "2026-08-15",
+          "version": "v0.9.44"
         },
         {
           "type": "commit",
@@ -84,13 +115,7 @@
           "source": "https://github.com/Graphify-Labs/graphify/commit/ceeafb05ce2c864bc46b4f8085585ea05030dc64"
         }
       ],
-      "shipped_in": "v0.9.44",
-      "note": "PR #2758 closed unmerged; the maintainer reimplemented the fix as ceeafb0 with a test in 94c2050, both referencing the issue, and credited it in the changelog. Exactly the shape a merge-state tracker scores zero.",
-      "dates": {
-        "opened": "2026-08-15",
-        "landed": "2026-08-15",
-        "released": "2026-08-15"
-      }
+      "already_recorded": true
     },
     {
       "id": "Graphify-Labs/graphify#2706",
@@ -104,7 +129,7 @@
         "url": "https://github.com/Graphify-Labs/graphify",
         "description": "Turn any codebase, with its docs, SQL schemas, configs, and PDFs, into a queryable knowledge graph. A /graphify skill for Claude Code, Cursor, Codex, and Gemini CLI: local deterministic AST parsing, every edge explained, no vector store."
       },
-      "title": "`affected` silently returns nothing when the seed path is spelled `./x` or absolute",
+      "title": "`affected` silently returns nothing when the path is spelled differently (./ or absolute)",
       "kind": "bugfix",
       "role": [
         "reporter",
@@ -115,12 +140,12 @@
       "links": {
         "issue": "https://github.com/Graphify-Labs/graphify/issues/2706",
         "pr": "https://github.com/Graphify-Labs/graphify/pull/2707",
-        "commit": "https://github.com/Graphify-Labs/graphify/commit/a05b4084d9ef7157af31af883d976515bda1f24e",
+        "commit": null,
         "release": "https://github.com/Graphify-Labs/graphify/releases/tag/v0.9.42"
       },
       "dates": {
         "opened": "2026-08-13",
-        "landed": "2026-08-13",
+        "landed": "2026-08-15",
         "released": "2026-08-13"
       },
       "impact": "`affected src/x.py` reported 16 dependents while `affected ./src/x.py` and the absolute form returned an empty list and exit 0 — a blast-radius answer indistinguishable both from a genuine \"nothing depends on this\" and from a typo, and `./` is exactly what shell completion produces. Since 0.9.42 the seed is normalised to repo-relative form before it is compared against the stored `source_file`; an absolute seed still requires the working directory to be the analysed repo root.",
@@ -128,7 +153,7 @@
         {
           "type": "changelog",
           "quote": "- Fix: `affected` resolves a seed passed as a `./`-relative path (or an absolute path when run from the repo root) instead of silently returning nothing (#2707, thanks @phudayyy). Note: an absolute-path seed still requires the working directory to be the analysed repo root.",
-          "source": "https://github.com/Graphify-Labs/graphify/blob/7fe58b0b0f3873be9a21c30106b8b8527c353aa6/CHANGELOG.md#L9",
+          "source": "https://github.com/Graphify-Labs/graphify/blob/281ccaa4ff38aaef3f19e823fb7645e19b28f591/CHANGELOG.md#L132",
           "where": "CHANGELOG.md",
           "version": "0.9.42"
         },
@@ -146,14 +171,10 @@
           "by": "safishamsi",
           "at": "2026-08-13",
           "version": "v0.9.42"
-        },
-        {
-          "type": "commit",
-          "quote": "fix(affected): resolve a seed given as ./relative or absolute path form (#2584 follow-up)",
-          "source": "https://github.com/Graphify-Labs/graphify/commit/a05b4084d9ef7157af31af883d976515bda1f24e"
         }
       ],
-      "recorded_at": "2026-08-13"
+      "recorded_at": "2026-08-13",
+      "already_recorded": true
     },
     {
       "id": "Graphify-Labs/graphify#2584",
@@ -178,7 +199,7 @@
       "links": {
         "issue": "https://github.com/Graphify-Labs/graphify/issues/2584",
         "pr": "https://github.com/Graphify-Labs/graphify/pull/2588",
-        "commit": null,
+        "commit": "https://github.com/Graphify-Labs/graphify/commit/a05b4084d9ef7157af31af883d976515bda1f24e",
         "release": "https://github.com/Graphify-Labs/graphify/releases/tag/v0.9.39"
       },
       "dates": {
@@ -191,7 +212,7 @@
         {
           "type": "changelog",
           "quote": "- Fix: `affected` now traverses a dynamic `import('…')` made inside a function or at module scope (#2584, thanks @phudayyy). The 0.9.38 dedupe keyed only on the target, so an in-function dynamic import (whose symbol-level edge is anchored on the enclosing function) suppressed the file-level edge `affected` follows; the dedupe now keys on the importing file, emitting one file-level `dynamic_import` edge per file/target while keeping the call-site edge.",
-          "source": "https://github.com/Graphify-Labs/graphify/blob/7fe58b0b0f3873be9a21c30106b8b8527c353aa6/CHANGELOG.md#L57",
+          "source": "https://github.com/Graphify-Labs/graphify/blob/281ccaa4ff38aaef3f19e823fb7645e19b28f591/CHANGELOG.md#L180",
           "where": "CHANGELOG.md",
           "version": "0.9.39"
         },
@@ -219,7 +240,8 @@
           "version": "v0.9.39"
         }
       ],
-      "recorded_at": "2026-08-10"
+      "recorded_at": "2026-08-10",
+      "already_recorded": true
     },
     {
       "id": "Graphify-Labs/graphify#2575",

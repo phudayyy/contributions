@@ -64,6 +64,8 @@
 
 - “Thanks @phudayyy for this. We had two PRs fixing the same bug (#2759), and we landed #2766 for it, which is now released in v0.9.44. Since the fix is shipped, closing this one as superseded. Really appreciate you digging into it, and hope to see more contributions.”
   <br>— [Maintainer @safishamsi](https://github.com/Graphify-Labs/graphify/pull/2769#issuecomment-5304298204)
+- “Fixed in v0.9.44 (on PyPI now) via #2766, thanks @NithishKumar04. Closing.”
+  <br>— [Maintainer @safishamsi](https://github.com/Graphify-Labs/graphify/issues/2759#issuecomment-5304295736)
 
 </details>
 
@@ -85,11 +87,13 @@
 <details><summary>Evidence</summary>
 
 - “- Fix: `affected` resolves a seed passed as a `./`-relative path (or an absolute path when run from the repo root) instead of silently returning nothing (#2707, thanks @phudayyy). Note: an absolute-path seed still requires the working directory to be the analysed repo root.”
-  <br>— [Changelog](https://github.com/Graphify-Labs/graphify/blob/281ccaa4ff38aaef3f19e823fb7645e19b28f591/CHANGELOG.md#L132)
+  <br>— [Changelog](https://github.com/Graphify-Labs/graphify/blob/33362d969292b57eda82f3fbd9eb5f3f5bc9bbc2/CHANGELOG.md#L160)
 - “- `affected` resolves a `./`-relative seed instead of silently returning nothing (#2707, @phudayyy).”
   <br>— [Release notes](https://github.com/Graphify-Labs/graphify/releases/tag/v0.9.42)
 - “Shipped in v0.9.42 (`graphifyy==0.9.42` on PyPI). Resolves a `./`-relative seed. Note: an absolute-path seed still requires the working directory to be the analysed repo root — a follow-up could derive the root from the graph location. Credited in the release notes. Thanks @phudayyy!”
   <br>— [Maintainer @safishamsi](https://github.com/Graphify-Labs/graphify/pull/2707#issuecomment-5281699928)
+- “Fixed in v0.9.44 (on PyPI now) via #2750, thanks @ousamabenyounes. Closing.”
+  <br>— [Maintainer @safishamsi](https://github.com/Graphify-Labs/graphify/issues/2706#issuecomment-5304295508)
 
 </details>
 
@@ -111,11 +115,13 @@
 <details><summary>Evidence</summary>
 
 - “- Fix: `affected` now traverses a dynamic `import('…')` made inside a function or at module scope (#2584, thanks @phudayyy). The 0.9.38 dedupe keyed only on the target, so an in-function dynamic import (whose symbol-level edge is anchored on the enclosing function) suppressed the file-level edge `affected` follows; the dedupe now keys on the importing file, emitting one file-level `dynamic_import` edge per file/target while keeping the call-site edge.”
-  <br>— [Changelog](https://github.com/Graphify-Labs/graphify/blob/281ccaa4ff38aaef3f19e823fb7645e19b28f591/CHANGELOG.md#L180) · [Release notes](https://github.com/Graphify-Labs/graphify/releases/tag/v0.9.39)
+  <br>— [Changelog](https://github.com/Graphify-Labs/graphify/blob/33362d969292b57eda82f3fbd9eb5f3f5bc9bbc2/CHANGELOG.md#L208) · [Release notes](https://github.com/Graphify-Labs/graphify/releases/tag/v0.9.39)
 - “Shipped in v0.9.39 (`graphifyy==0.9.39`). Re-keying the dynamic-import dedupe on the importing file (not the target alone) is what landed for #2584, so `affected` traverses an in-function dynamic import. Credited in the release notes. Thanks @phudayyy!”
   <br>— [Maintainer @safishamsi](https://github.com/Graphify-Labs/graphify/pull/2588#issuecomment-5245052982)
 - “Fixed in v0.9.39 (`graphifyy==0.9.39` on PyPI). The 0.9.38 dynamic-import dedupe keyed only on the target, so an in-function `import(...)` (whose symbol-level edge is anchored on the enclosing function) suppressed the file-level edge `affected` traverses. The dedupe now keys on the importing file, emitting one file-level `dynamic_import` edge per file/target while keeping the call-site edge, so `affected` reaches the importer for side-effect / namespace / different-symbol imports. Thanks @phuday”
   <br>— [Maintainer @safishamsi](https://github.com/Graphify-Labs/graphify/issues/2584#issuecomment-5245049934)
+- “fix(affected): resolve a seed given as ./relative or absolute path form (#2584 follow-up)”
+  <br>— [Commit](https://github.com/Graphify-Labs/graphify/commit/a05b4084d9ef7157af31af883d976515bda1f24e)
 
 </details>
 

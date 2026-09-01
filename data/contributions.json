@@ -42,6 +42,14 @@
           "by": "safishamsi",
           "at": "2026-08-15",
           "version": "v0.9.44"
+        },
+        {
+          "type": "maintainer-thanks",
+          "quote": "Fixed in v0.9.44 (on PyPI now) via #2766, thanks @NithishKumar04. Closing.",
+          "source": "https://github.com/Graphify-Labs/graphify/issues/2759#issuecomment-5304295736",
+          "by": "safishamsi",
+          "at": "2026-08-15",
+          "version": "v0.9.44"
         }
       ],
       "already_recorded": true
@@ -153,7 +161,7 @@
         {
           "type": "changelog",
           "quote": "- Fix: `affected` resolves a seed passed as a `./`-relative path (or an absolute path when run from the repo root) instead of silently returning nothing (#2707, thanks @phudayyy). Note: an absolute-path seed still requires the working directory to be the analysed repo root.",
-          "source": "https://github.com/Graphify-Labs/graphify/blob/281ccaa4ff38aaef3f19e823fb7645e19b28f591/CHANGELOG.md#L132",
+          "source": "https://github.com/Graphify-Labs/graphify/blob/33362d969292b57eda82f3fbd9eb5f3f5bc9bbc2/CHANGELOG.md#L160",
           "where": "CHANGELOG.md",
           "version": "0.9.42"
         },
@@ -171,6 +179,14 @@
           "by": "safishamsi",
           "at": "2026-08-13",
           "version": "v0.9.42"
+        },
+        {
+          "type": "maintainer-thanks",
+          "quote": "Fixed in v0.9.44 (on PyPI now) via #2750, thanks @ousamabenyounes. Closing.",
+          "source": "https://github.com/Graphify-Labs/graphify/issues/2706#issuecomment-5304295508",
+          "by": "safishamsi",
+          "at": "2026-08-15",
+          "version": "v0.9.44"
         }
       ],
       "recorded_at": "2026-08-13",
@@ -212,7 +228,7 @@
         {
           "type": "changelog",
           "quote": "- Fix: `affected` now traverses a dynamic `import('…')` made inside a function or at module scope (#2584, thanks @phudayyy). The 0.9.38 dedupe keyed only on the target, so an in-function dynamic import (whose symbol-level edge is anchored on the enclosing function) suppressed the file-level edge `affected` follows; the dedupe now keys on the importing file, emitting one file-level `dynamic_import` edge per file/target while keeping the call-site edge.",
-          "source": "https://github.com/Graphify-Labs/graphify/blob/281ccaa4ff38aaef3f19e823fb7645e19b28f591/CHANGELOG.md#L180",
+          "source": "https://github.com/Graphify-Labs/graphify/blob/33362d969292b57eda82f3fbd9eb5f3f5bc9bbc2/CHANGELOG.md#L208",
           "where": "CHANGELOG.md",
           "version": "0.9.39"
         },
@@ -238,6 +254,11 @@
           "by": "safishamsi",
           "at": "2026-08-10",
           "version": "v0.9.39"
+        },
+        {
+          "type": "commit",
+          "quote": "fix(affected): resolve a seed given as ./relative or absolute path form (#2584 follow-up)",
+          "source": "https://github.com/Graphify-Labs/graphify/commit/a05b4084d9ef7157af31af883d976515bda1f24e"
         }
       ],
       "recorded_at": "2026-08-10",

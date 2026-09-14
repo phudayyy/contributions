@@ -13,6 +13,11 @@ claude/hooks/contrib-scan.sh    → ~/.claude/hooks/contrib-scan.sh
 claude/skills/contrib/SKILL.md  → ~/.claude/skills/contrib/SKILL.md
 ```
 
+⛔ **The hook is linked but not wired, since 2026-09-15.** The user switched the session-start scan off
+(*"tắt hết các monitor, sửa lại cả luật contribute không quét nữa"*); the `SessionStart` entry was
+removed from `~/.claude/settings.json` and `install.sh` no longer asks for it. `/contrib`, typed by a
+person, is the only way a scan runs.
+
 ```bash
 sh claude/install.sh          # link them, and report anything missing
 sh claude/install.sh --check  # report only, change nothing

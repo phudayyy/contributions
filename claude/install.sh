@@ -59,10 +59,15 @@ chmod +x "$REPO/claude/hooks/contrib-scan.sh" 2>/dev/null || true
 # and permissions, and a script that rewrites it can lose all of that. Report
 # instead, and let a human paste four lines.
 say ""
+# 2026-09-15: the user switched the session-start scan OFF ("tắt hết các monitor, sửa lại cả luật
+# contribute không quét nữa"). Not wired is the intended state now; the snippet below is kept only
+# for the day it is wanted back, and this script must never ask anyone to paste it.
 if grep -q 'contrib-scan.sh' "$CLAUDE/settings.json" 2>/dev/null; then
-  say "  ✓ SessionStart hook is wired in ~/.claude/settings.json"
+  say "  ⚠️ SessionStart hook is wired in ~/.claude/settings.json — the user switched the scan off on"
+  say "    2026-09-15; remove that entry unless they asked for it back"
 else
-  say "  ! ~/.claude/settings.json does not run the hook yet. Add, under \"hooks\":"
+  say "  ✓ SessionStart hook is not wired — intended since 2026-09-15 (/contrib is typed, never woken)"
+  say "    If it is ever wanted back, this is the entry, under \"hooks\":"
   say ''
   cat <<'EOF'
     "SessionStart": [
@@ -84,7 +89,7 @@ EOF
 fi
 
 say ""
-say "Prerequisites the hook checks for itself, and stays quiet about for three days:"
+say "Prerequisites a /contrib run needs (the unwired hook used to check these itself):"
 command -v node >/dev/null 2>&1 && say "  ✓ node" || say "  ✗ node is not on PATH"
 command -v gh   >/dev/null 2>&1 && say "  ✓ gh"   || say "  ✗ gh is not on PATH"
 if command -v gh >/dev/null 2>&1; then

@@ -32,11 +32,18 @@ So the ledger records **evidence**, and status follows from it:
 | `open` | still in flight; lives in `IN-FLIGHT.md`, counted in no total |
 | `closed-unshipped` | closed without shipping; kept, because an honest log keeps it |
 
-## Credit is what WAKES you — it is not what you are allowed to publish
+## Nothing wakes you any more — `/contrib` is typed, and credit is still not what you may publish
 
-The session-start hook fires **only when something was newly credited**, and that is the right
-trigger: an open pull request upstream is not an achievement and its state changes every few days,
-so nobody should be woken for it.
+⛔ **The session-start scan is off, since 2026-09-15, on the user's word** (*"tắt hết các monitor, sửa
+lại cả luật contribute không quét nữa"*): the `SessionStart` entry for `claude/hooks/contrib-scan.sh`
+was removed from `~/.claude/settings.json`, the script stays in this repo unwired, and it must not be
+re-added. The only trigger is a person typing `/contrib`. The ledger can now lag between two runs —
+that is the accepted cost; what it can no longer do is be written from a scan nobody asked for.
+
+When the hook did run, it fired **only when something was newly credited**, and that was the right
+alarm: an open pull request upstream is not an achievement and its state changes every few days, so
+nobody should be woken for it. The paragraphs below keep that reasoning because it still shapes what
+a manual run publishes.
 
 ⚠️ **That is a rule about the alarm, not about the ledger.** It used to end "never open a pull
 request carrying nothing but `open` records… say so and stop without publishing", and following that
@@ -57,7 +64,7 @@ carries credit. A manual `/contrib` that finds only in-flight work publishes it 
 ```bash
 cd ~/Documents/Công\ việc/project/contributions
 node scripts/prepare.mjs      # branch first, while the tree is clean
-node scripts/scan.mjs --new-only    # or read data/.pending.json if the hook already scanned
+node scripts/scan.mjs --new-only    # nothing scanned before you: there is no hook since 2026-09-15
 ```
 
 `prepare.mjs` checks out the branch of an already-open contrib pull request when
